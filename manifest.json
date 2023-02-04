@@ -1,0 +1,11 @@
+{
+  "name": "Iconur",
+  "id": "1201979345759421223",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": [
+    "figma",
+    "figjam"
+  ],
+  "ui": "ui.html"
+}

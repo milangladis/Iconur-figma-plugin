@@ -1,0 +1,495 @@
+<html>
+  <head>
+    <title>Iconur - In Line We Trust</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700&display=swap" rel="stylesheet" />
+    <style>
+      html, body {
+        font-size: 14px;
+        font-family: 'Nunito', sans-serif;
+      }
+      .wrapper {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      label, .label {
+        font-size: 12px;
+        position: relative;
+      }
+      label.labelHiddenInputColor {
+        z-index: 1;
+      }
+      label.labelHiddenInputColor span {
+        pointer-events: all;
+        cursor: pointer;
+      }
+
+      label span, .label span {
+        position: absolute;
+        height: 32px;
+        line-height: 32px;
+        left: 12px;
+        opacity: 0.5; 
+        pointer-events: none;
+      }
+      input {
+        appearance: none;
+        height: 32px;
+        flex: 1;
+        width: 100%;
+        border-radius: 4px;
+        padding: 0 12px;
+        text-align: right;
+        font-weight: 600;
+        outline: none;
+        border: none;
+        background-color: transparent;
+      }
+      input:hover {
+        box-shadow: inset 0 0 0 1px #EFF0F4;
+      }
+      input:focus {
+        box-shadow: inset 0 0 0 1px #6935DB;
+      }
+      .inputSearch {
+        text-align: left;
+        box-shadow: inset 0 0 0 1px #EFF0F4;
+        font-weight: normal;
+        padding-right: 32px;
+      }
+      .inputSize {
+        width: 130px;
+      }
+      .inputStroke {
+        width: 160px;
+      }
+      .inputColor {
+        width: 220px;
+        border-radius: 4px;
+      }
+      .inputColor:hover {
+        box-shadow: inset 0 0 0 1px #EFF0F4;
+      }
+      .hiddenInputColor {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      .search {
+        flex: 1;
+        position: relative;
+      }
+      .search .reset {
+        position: absolute;
+        right: 4px;
+        top: 4px;
+        display: none;
+        cursor: pointer;
+      }
+      .openIconur {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 32px;
+        height: 32px;
+      }
+      .openIconur span {
+        opacity: 0;
+        position: absolute;
+        pointer-events: none;
+        right: 80%;
+        top: 4px;
+        line-height: 24px;
+        background-color: #323137;
+        border-radius: 4px;
+        color: #fff;
+        white-space: nowrap;
+        transition: all 0.1s ease;
+        font-size: 12px;
+        padding: 0 8px;
+      }
+      .openIconur:hover span {
+        opacity: 1;
+        right: 100%;
+      }
+      .settings {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        gap: 8px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #EFF0F4;
+      }
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      .icons {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(45px, 2fr));
+        overflow-y: scroll;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+      .icons.dark {
+        background: #323137;
+      }
+      .icons.dark .icon:hover {
+        background: #1c1c1f;
+      }
+      .icon {
+        aspect-ratio: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        cursor: move; /* fallback if grab cursor is unsupported */
+        cursor: grab;
+        cursor: -moz-grab;
+        cursor: -webkit-grab;
+      }
+      .icon svg {
+        transition: all 0.15s ease;
+      }
+      .icon:hover {
+        /* transform: scale(1.1); */
+        background-color: #EFF0F4;
+      }
+      .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+        font-size: 14px;
+        font-weight: 600;
+        color: rgba(0,0,0,0.5);
+      }
+      .banner {
+        /* display: none;  */
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+        left: 6px;
+        right: 6px;
+        bottom: 6px;
+        background: linear-gradient(101.4deg, #924FE7 0%, #5214E1 100%), #8745E6;
+        border-radius: 8px;
+        padding: 12px 16px 16px;
+        color: white;
+        z-index: 10;
+      }
+      .banner.show {
+        pointer-events: all;
+        opacity: 0;
+        animation: showBanner 0.3s ease forwards;
+      }
+      @keyframes showBanner {
+        0% {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .banner-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 4px;
+      }
+      .banner-header-title {
+        flex: 1;
+      }
+      .bannerClose {
+        cursor: pointer;
+        position: relative;
+        margin-right: -4px;
+      }
+      .banner-content {
+        margin: 4px 0 16px;
+        opacity: 0.8;
+      }
+      .banner-button {
+        background-color: #fff;
+        border-radius: 4px;
+        color: #6222E3;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 32px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="header">
+        <div class="title">
+          <div class="search">
+            <label for="">
+              <input id="search" class="inputSearch" type="text" placeholder="Search icon...">
+            </label>
+            <svg class="reset" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8.5 15.5L12 12M12 12L15.5 8.5M12 12L15.5 15.5M12 12L8.5 8.5" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>            
+          </div>
+          <a class="openIconur" href="https://iconur.com" target="_blank" tabindex="-1">
+            <span>Open Iconur.com</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" stroke="#000000" fill="none" stroke-linejoin="round" stroke-width="2" stroke-linecap="round" xmlns="http://www.w3.org/2000/svg"><path d="M17 14V17C17 18.1046 16.1046 19 15 19H7C5.89543 19 5 18.1046 5 17V9.00001C5 7.89544 5.89543 7.00001 7 7.00001H10M13.5 10.5L19.0001 5.00011M19.0001 5.00011L14.5 5M19.0001 5.00011V9.5"></path></svg>
+          </a>
+        </div>
+        <div class="settings">
+          <label for="" class="inputSize">
+            <span>Size</span>
+            <input id="size" type="number" value="24" min="18" max="64" step="2">
+          </label>
+          <label for="" class="inputStroke">
+            <span>Stroke</span>
+            <input id="stroke" type="number" value="1.25" min="0.5" max="2" step="0.25">
+          </label>
+          <div class="label inputColor">
+            <input id="colorInput" type="color" value="#000000" class="hiddenInputColor" tabindex="-1">
+            <label for="colorInput" class="labelHiddenInputColor">
+              <span>Color</span>
+            </label>
+            <label for="">
+              <input id="color" type="text" value="#000000">
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="icons"></div>
+      <div class="loading">Loading...</div>
+      <div class="banner">
+        <div class="banner-header">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11.8733 3C10.5789 3 9.7655 3.64427 9.30065 4.2104C9.08172 4.47705 8.49073 4.47701 8.2718 4.21034C7.80703 3.64423 6.99372 3 5.69901 3C3.39062 3 2 5.20075 2 7.01443C2 9.38977 6.14449 12.7384 7.95575 14.0883C8.45082 14.4574 9.12155 14.4574 9.6167 14.0884C11.4279 12.7387 15.5724 9.39105 15.5724 7.01497C15.5724 5.20075 14.1828 3 11.8733 3Z" fill="white"/>
+          </svg>
+          <div class="banner-header-title">Support new icons</div>
+          <svg class="bannerClose" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8.5 15.5L12 12M12 12L15.5 8.5M12 12L15.5 15.5M12 12L8.5 8.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>            
+        </div>
+        <div class="banner-content">Become a supporter and donate the project. Every penny counts. Thanks 🙏</div>
+        <a href="https://github.com/sponsors/milangladis" target="_blank" class="banner-button" tabindex="-1">Donate</a>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    const iconsContainer = document.querySelector('.icons');
+    const icons = document.querySelector('.icons');
+    const search = document.querySelector('#search');
+    const size = document.querySelector('#size');
+    const stroke = document.querySelector('#stroke');
+    const colorInput = document.querySelector('#colorInput');
+    const color = document.querySelector('#color');
+    const reset = document.querySelector('.reset');
+    const banner = document.querySelector('.banner');
+    const discardBanner = document.querySelector('.bannerClose');
+    
+
+    window.addEventListener('message', (event) => {
+      console.log(event.data.pluginMessage);
+      if (event.data.pluginMessage.type === 'banner') {
+        if (event.data.pluginMessage.status === true) {
+          setTimeout(function() {
+            // banner.style.display = 'block';
+            banner.classList.add('show');
+          }, 2000);
+        } else {
+          banner.style.display = 'none';
+        }
+      }
+
+      // if (event.data.pluginMessage.status === true) {
+      //   size.value = event.data.pluginMessage.size;
+      //   stroke.value = event.data.pluginMessage.stroke;
+      //   colorInput.value = event.data.pluginMessage.color;
+      //   color.value = event.data.pluginMessage.color;
+      // } 
+    });
+
+    search.addEventListener('input', function() {
+      const icons = document.querySelectorAll('.icon');
+      const searchTerm = this.value.toLowerCase();
+      // condition if search term has more than 0 characters
+      if (searchTerm.length > 0) {
+        // search.nextElementSibling.style.display = 'block';
+        reset.style.display = 'block';
+      } else {
+        reset.style.display = 'none';
+      }
+      icons.forEach(function(icon) {
+        const iconName = icon.dataset.iconName;
+        if (iconName.includes(searchTerm)) {
+          icon.style.display = 'flex';
+        } else {
+          icon.style.display = 'none';
+        }
+      });
+    });
+    search.addEventListener("keydown", function(event) {
+      if ((event.key === "Enter") || (event.key === "Escape")) {
+        resetList();
+      }
+    });
+    
+    discardBanner.addEventListener('click', function() {
+      console.log('click');
+
+      parent.postMessage({ pluginMessage: { 'type': 'banner', 'status': false} }, '*');
+      banner.style.display = 'none';
+    });
+
+    reset.addEventListener('click', function() {
+      resetList();
+    });
+
+    const resetList = () => {
+      search.value = ''
+      reset.style.display = 'none';
+      search.focus();
+      const icons = document.querySelectorAll('.icon');
+      icons.forEach(function(icon) {
+        icon.style.display = 'flex';
+      })
+    }
+
+    size.addEventListener('input', function() {
+      const inputValue = this.value
+      const icons = document.querySelectorAll('.icon svg');
+      icons.forEach(function(icon) {
+        icon.setAttribute('width', inputValue);
+        icon.setAttribute('height', inputValue);
+      });
+      parent.postMessage({ pluginMessage: { 'type': 'settings', 'settingsSize': this.value} }, '*');
+    });
+    
+    stroke.addEventListener('input', function() {
+      const inputValue = this.value
+      const icons = document.querySelectorAll('.icon svg');
+      icons.forEach(function(icon) {
+        icon.setAttribute('stroke-width', inputValue);
+      });
+    });
+    
+    color.addEventListener('input', function() {
+      const inputValue = this.value
+      setIconColor(inputValue);
+    });
+    
+    colorInput.addEventListener('input', function() {
+      const inputValue = this.value
+      color.value = inputValue;
+      setIconColor(inputValue);
+
+    });
+    const setIconColor = (color) => {
+      const icons = document.querySelectorAll('.icon svg');
+      if  (color === '#ffffff') {
+        iconsContainer.classList.add('dark');
+      } else {
+        iconsContainer.classList.remove('dark');
+      }
+      icons.forEach(function(icon) {
+        icon.setAttribute('stroke', color);
+      });
+    }
+
+    async function fetchIcons() {
+      const res = await fetch("https://iconur.com/api/icons");
+      const data = await res.json();
+      document.querySelector(".loading").style.display = "none";
+      data.icons.map(icon => generateSVG(icon))
+      return data.icons;
+    }
+
+    function generateSVG(icon) {
+      const paths = icon.path;
+      const iconWrapper = document.createElement('div');
+      // svg.setAttribute('name', icon.name);
+      iconWrapper.setAttribute('draggable', 'true');
+      iconWrapper.setAttribute('class', 'icon');
+      iconWrapper.setAttribute('data-icon-name', icon.name);
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('width', '24');
+      svg.setAttribute('height', '24');
+      svg.setAttribute('draggable', 'true');
+      svg.setAttributeNS(null, 'viewBox', '0 0 24 24');
+      svg.setAttributeNS(null, 'fill', 'none');
+      svg.setAttributeNS(null, 'stroke', 'black');
+      svg.setAttributeNS(null, 'stroke-width', '1.25px');
+      svg.setAttributeNS(null, 'stroke-linecap', 'round');
+      
+      paths.forEach((path, index) => {
+        const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        p.setAttributeNS(null, 'd', path);
+        svg.appendChild(p);
+      });
+      iconWrapper.appendChild(svg);
+      
+      iconsContainer.appendChild(iconWrapper);
+
+      iconWrapper.addEventListener('click', () => {
+        const svg = iconWrapper.innerHTML;
+        console.log(svg);
+        navigator.clipboard.writeText(svg).then(() => {
+          console.log('SVG copied to clipboard');
+        }).catch(err => {
+          console.error('Could not copy SVG to clipboard', err);
+        });
+      });
+
+      iconWrapper.addEventListener('dragend', e => {
+        // Don't proceed if the item was dropped inside the plugin window.
+        if (e.view.length === 0) return;
+
+        const file = new File(
+          [e.target.innerHTML],
+          'content.svg',
+          { type: 'image/svg+xml' }
+        );
+
+        // const parentingStrategy = document.querySelector('input[name="parentingStrategy"]:checked').value;
+        const inputSize = document.querySelector('input[id="size"]').value;
+        const inputStroke = document.querySelector('input[id="stroke"]').value;
+        const inputColor = document.querySelector('input[id="color"]').value;
+
+
+        const iconName = icon.name
+        // This will trigger a drop event in Figma that we can register a callback for
+        window.parent.postMessage(
+          {
+            pluginDrop: {
+              clientX: e.clientX,
+              clientY: e.clientY,
+              files: [file],
+              dropMetadata: {iconName}
+            }
+          },
+          '*'
+        );
+      });
+    }
+
+    fetchIcons()    
+
+  </script>
+</html>
