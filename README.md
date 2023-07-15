@@ -1,3 +1,26 @@
+### About
+Iconur is a Figma plugin that contains a library of minimalistic and consistent line icons made by [Milan Gladiš](https://milangladis.com/).
+
+You can also grab the icons directly from [Iconur.com](https://iconur.com/)
+
+![image](https://github.com/milangladis/Iconur-figma-plugin/assets/1476427/bce85d05-76a0-42ed-89d5-c965032a23e2)
+
+### Features:
+- Fetch a JSON with icons from Iconur.com
+- Drag & drop icons to the canvas
+- Set up the icon's size, colour and stroke size
+
+---
+### Do you want to contribute?
+Any ideas of how to improve the plugin or do you want to contribute with new icons? Let me know.
+
+---
+### Support icons creation
+Hi there 👋 If you found the plugin or icons useful, consider supporting my works via [Github Sponsor page](https://github.com/sponsors/milangladis)
+
+
+---
+### How to install the plugin locally?
 Below are the steps to get your plugin running. You can also find instructions at:
 
   https://www.figma.com/plugin-docs/setup/
