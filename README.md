@@ -3,7 +3,7 @@ Iconur is a Figma plugin that contains a library of minimalistic and consistent 
 
 You can also grab the icons directly from [Iconur.com](https://iconur.com/)
 
-![image](https://github.com/milangladis/Iconur-figma-plugin/assets/1476427/bce85d05-76a0-42ed-89d5-c965032a23e2)
+![image](https://github.com/milangladis/Iconur-figma-plugin/blob/main/iconur-figma-plugin.png?raw=true)
 
 ### Features:
 - Fetch a JSON with icons from Iconur.com
