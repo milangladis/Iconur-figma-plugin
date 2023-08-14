@@ -42,7 +42,7 @@ var settingsColor:string;
 
 (async () => {
   try {
-    // figma.clientStorage.setAsync('iconurBannerBoolean', true);
+    figma.clientStorage.setAsync('iconurBannerBoolean', true);
     let iconurBannerBoolean = await figma.clientStorage.getAsync('iconurBannerBoolean');
     // console.log('storage: ' + iconurBannerBoolean)
     if (iconurBannerBoolean !== undefined) {

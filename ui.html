@@ -331,6 +331,7 @@
   </body>
 
   <script>
+    let iconsData;
     const iconsContainer = document.querySelector('.icons');
     const icons = document.querySelector('.icons');
     const search = document.querySelector('#search');
@@ -363,24 +364,39 @@
     });
 
     search.addEventListener('input', function() {
-      const icons = document.querySelectorAll('.icon');
+      const iconsDisplay = document.querySelectorAll('.icon');
       const searchTerm = this.value.toLowerCase();
-      // condition if search term has more than 0 characters
+      
       if (searchTerm.length > 0) {
-        // search.nextElementSibling.style.display = 'block';
-        reset.style.display = 'block';
+          const searchResults = searchIcons(searchTerm);
+          iconsDisplay.forEach(function(iconDisplay) {
+              const iconName = iconDisplay.dataset.iconName;
+              const iconExistsInSearchResults = searchResults.some(icon => icon.name.toLowerCase() === iconName);
+              
+              if (iconExistsInSearchResults) {
+                  iconDisplay.style.display = 'flex';
+              } else {
+                  iconDisplay.style.display = 'none';
+              }
+          });
       } else {
-        reset.style.display = 'none';
+          iconsDisplay.forEach(iconDisplay => {
+              iconDisplay.style.display = 'flex';
+          });
       }
-      icons.forEach(function(icon) {
-        const iconName = icon.dataset.iconName;
-        if (iconName.includes(searchTerm)) {
-          icon.style.display = 'flex';
-        } else {
-          icon.style.display = 'none';
-        }
-      });
     });
+
+    function searchIcons(query) {
+      const searchWords = query.toLowerCase().split(" ");
+      return iconsData.icons.filter(icon => {
+        return searchWords.every(word => {
+          return icon.keywords.some(keyword => {
+            return keyword.toLowerCase().includes(word);
+          })
+        })
+      })
+    }
+
     search.addEventListener("keydown", function(event) {
       if ((event.key === "Enter") || (event.key === "Escape")) {
         resetList();
@@ -497,6 +513,7 @@
     async function fetchIcons() {
       const res = await fetch("https://iconur.com/api/icons");
       const data = await res.json();
+      iconsData = data;
       document.querySelector(".loading").style.display = "none";
       data.icons.map(icon => generateSVG(icon))
       return data.icons;
